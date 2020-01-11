@@ -12,9 +12,16 @@ class SongsController < ApplicationController
   end
 
   def create
+    #byebug
     @song = Song.new(song_params)
-
+    #byebug
+    params[:note_contents].each do |note_content|
+      n = Note.create(content: note_content)
+      @song.notes << n
+    end 
+    byebug
     if @song.save
+      byebug 
       redirect_to @song
     else
       render :new
@@ -47,7 +54,7 @@ class SongsController < ApplicationController
   private
 
   def song_params
-    params.require(:song).permit(:title)
+    params[:song].permit(:title, :category_name, :artist_name, :genre_name)
   end
 end
 
